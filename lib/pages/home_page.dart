@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,21 +10,86 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  double top = 0;
+  double left = 0;
+  Color color = Colors.greenAccent;
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-          color: Colors.blue,
+          color: Colors.blueGrey,
         ),
-        Container(
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 500),
           height: MediaQuery.of(context).size.height * 0.92,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(30),
               bottomRight: Radius.circular(30),
             ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 200),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            top = MediaQuery.of(context).size.height * 0.30;
+                            left = MediaQuery.of(context).size.width * 0.09;
+                          });
+                        },
+                        child: const Text('Change Image Position')),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 200),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            color = Colors.deepPurple;
+                          });
+                        },
+                        child: const Text('Change Color')),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            top = MediaQuery.of(context).size.height * 0;
+                            left = MediaQuery.of(context).size.width * 0;
+                          });
+                        },
+                        child: const Text('Revert Image Position')),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            color = Colors.greenAccent;
+                          });
+                        },
+                        child: const Text('Revert Color')),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
         Container(
@@ -65,9 +132,10 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.30,
-          left: MediaQuery.of(context).size.width * 0.09,
+        AnimatedPositioned(
+          duration: const Duration(milliseconds: 500),
+          top: top,
+          left: left,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
             child: Image.asset(
